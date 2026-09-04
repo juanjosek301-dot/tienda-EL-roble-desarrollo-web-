@@ -3,110 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>El roble mini mercado</title>
-
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Inicio | El roble</title>
+    <link rel="stylesheet" href="style/styles.css">
 </head>
-
 <body>
 
     <header class="header">
+
         <nav class="nav">
-            <a href="#" class="logo">🏪 El roble</a>
+
+            <a href="index.html" class="logo">🏪 El roble</a>
 
             <ul class="nav-links">
                 <li><a href="productos.html">Catálogo</a></li>
                 <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
-                <li><a href="pedido.html">Realizar pedido </a></li>
-
+                <li><a href="carrito.html">Carrito</a></li>
+                <li><a href="pedido.html">Realizar pedido</a></li>
             </ul>
+
         </nav>
-        
+
     </header>
 
     <main>
 
         <section class="hero">
-            <h1>Todo lo que necesitas para tu hogar</h1>
-            <p>Encuentra productos de la canasta familiar con precios
-                accesibles y calidad garantizada.
-            </p>
+
+            <div class="hero-contenido">
+
+                <h1>Todo lo que necesitas para tu hogar</h1>
+                <p>Encuentra productos de la canasta familiar con precios accesibles y calidad garantizada.</p>
+                <a href="productos.html" class="btn">Ver catálogo completo</a>
+
+            </div>
 
         </section>
 
         <section class="categorias">
 
-            <h2>Compra por categorías</h2>
+            <div class="seccion-contenido">
 
-            <P>
-                Selecciona una categoría para encontrar
-                los productos que necesitas
-            </P>
+                <h2>Compra por categorías</h2>
+                <p>Selecciona una categoría para encontrar los productos que necesitas.</p>
 
-            <div class="grid-categorias">
+                <div class="categorias-grid">
 
-                <button class="categoria-btn" data-categoria="abarrotes">
-                    🛒 Abarrotes
-                </button>
+                    <!-- Atributo data-* permitido y recomendado por la guía -->
+                    <button class="categoria-btn" data-categoria="abarrotes">🛒 Abarrotes</button>
+                    <button class="categoria-btn" data-categoria="bebidas">🥤 Bebidas</button>
+                    <button class="categoria-btn" data-categoria="aseo">🧼 Aseo</button>
+                    <button class="categoria-btn" data-categoria="lacteos">🥛 Lácteos</button>
+                    <button class="categoria-btn" data-categoria="snacks">🍪 Snacks</button>
 
-                <button class="categoria-btn" data-categoria="bebidas">
-                    🥤 Bebidas
-                </button>
+                </div>
 
-                <button class="categoria-btn" data-categoria="aseo">
-                    🧼 Aseo
-                </button>
-
-                <button class="categoria-btn" data-categoria="lacteos">
-                    🥛 Lácteos
-                </button>
-
-                <button class="categoria-btn" data-categoria="snacks">
-                    🍪 Snacks
-                </button>
             </div>
 
-        <section class="destacados">
+        </section>
 
-            <h2>Productos destacados</h2>
+        <section class="productos-destacados">
 
-            <p>
-                Conoce algunos de los productos que puedes
-                encontrar en nuestro mercado.
-            </p>
-
-            <div id="productos-destacados" class="grid-productos">
-                <!--
-                    Los productos destacados
-                    serán generados mediante JavaScript.
-                -->
+            <div class="seccion-contenido">
+                <h2>Productos destacados</h2>
+                <p>Conoce algunos de los productos que puedes encontrar en nuestro mercado.</p>
+                <!-- Contenedor vacío que llenaremos con JavaScript -->
+                <div id="productos-destacados-container" class="grid-productos"></div>
             </div>
 
         </section>
 
         <section class="presentacion">
 
-            <h2>Sobre El roble</h2>
+            <div class="presentacion-contenido">
+                <h2>Sobre El roble</h2>
+                <p>El roble es un minimercado ubicado en Medellín que ofrece productos de la canasta básica, bebidas, lácteos, artículos de aseo y snacks para el hogar.</p>
+                <a href="sobre-nosotros.html" class="btn">Conócenos</a>
+            </div>
 
-            <P>
-                El roble es un minimercado ubicado
-                en Medellín que ofrece productos de la canasta
-                básica, bebidas, lácteos, artículos de aseo
-                y snacks para el hogar.
-            </P>
-
-            <a href="sobre-nosotros.html" class="btn">
-                Conócenos
-            </a>
         </section>
+
     </main>
 
     <footer class="footer">
-        <p>© 2026 El roble - Medellín, Colombia</p>
+        <p>&copy; 2026 El roble - Medellín, Colombia</p>
     </footer>
-    
-    <!-- JavaScript -->
+
     <script src="js/app.js"></script>
 </body>
 </html>

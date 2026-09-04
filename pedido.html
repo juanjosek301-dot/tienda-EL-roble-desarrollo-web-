@@ -5,19 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Realizar pedido | El roble</title>
+    <title>Realizar pedido | El Roble</title>
 
     <link rel="stylesheet" href="style/styles.css">
 </head>
 
 <body>
 
+    <!-- ENCABEZADO -->
     <header class="header">
 
         <nav class="nav">
 
             <a href="index.html" class="logo">
-                🏪 El roble
+                🏪 El Roble
             </a>
 
             <ul class="nav-links">
@@ -31,6 +32,10 @@
                 </li>
 
                 <li>
+                    <a><li><a href="carrito.html">Carrito</a></li></a>
+                </li>
+
+                <li>
                     <a href="pedido.html">Realizar pedido</a>
                 </li>
 
@@ -40,23 +45,51 @@
 
     </header>
 
+
+    <!-- CONTENIDO PRINCIPAL -->
     <main>
 
+        <!-- ENCABEZADO -->
         <section class="pedido-header">
 
             <h1>Realizar pedido</h1>
 
             <p>
                 Completa el siguiente formulario para realizar
-                tu pedido en EL roble.
+                tu pedido en El Roble.
             </p>
 
         </section>
 
+
+        <!-- FORMULARIO -->
         <section class="pedido">
 
-            <form id="formulario-pedido">
+            <form id="formulario-pedido" novalidate>
 
+                <section class="resumen-pedido">
+
+                    <h2>Resumen del pedido</h2>
+
+                    <div id="resumen-productos">
+                        <!-- 
+                            JavaScript mostrará aquí
+                            los productos del carrito.
+                        -->
+
+                        <P>
+                            Los productos seleccionados aparecerán aquí.
+                        </P>
+                    </div>
+
+                    <p>
+                        total:
+                        <strong id="resumen-total">$0</strong>
+                    </p>
+
+                </section>
+
+                <!-- INFORMACIÓN DEL CLIENTE -->
                 <section class="datos-cliente">
 
                     <h2>Información del cliente</h2>
@@ -69,19 +102,48 @@
                         type="text"
                         id="nombre"
                         name="nombre"
-                        required
-                    >
+                        required>
+
+                    <span
+                        class="mensaje-error"
+                        id="error-nombre">
+                        Ingresa tu nombre completo.
+                    </span>
+
+
+                    <label for="email">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required>
+
+                    <span
+                        class="mensaje-error"
+                        id="error-email">
+                        Ingresa un correo electrónico válido.
+                    </span>
+
 
                     <label for="telefono">
                         Teléfono
                     </label>
 
                     <input
-                        type="text"
+                        type="tel"
                         id="telefono"
                         name="telefono"
-                        required
-                    >
+                        required>
+
+                    <span
+                        class="mensaje-error"
+                        id="error-telefono">
+                        Ingresa un número de teléfono válido.
+                    </span>
+
 
                     <label for="direccion">
                         Dirección de entrega
@@ -91,62 +153,54 @@
                         type="text"
                         id="direccion"
                         name="direccion"
-                        required
-                    >
+                        required>
+
+                    <span
+                        class="mensaje-error"
+                        id="error-direccion">
+                        Ingresa una dirección válida.
+                    </span>
 
                 </section>
 
+                <!-- MÉTODO DE PAGO -->
 
-                <section class="datos-pedido">
+                <section class="metodo-pago">
 
-                    <h2>Información del pedido</h2>
+                    <h2>Metodo de pago</h2>
 
-                    <label for="producto">
-                        Producto
+                    <label for="metodo-pago">
+                        Selecciona un método
                     </label>
 
-                    <input
-                        type="text"
-                        id="producto"
-                        name="producto"
-                        required
-                    >
+                    <select
+                        id="metodo-pago"
+                        name="metodo-pago"
+                        required>
 
-                    <label for="cantidad">
-                        Cantidad
-                    </label>
+                        <option value="">
+                            Selecciona un método...
+                        </option>
 
-                    <input
-                        type="text"
-                        id="cantidad"
-                        name="cantidad"
-                        required
-                    >
+                        <option value="efectivo">
+                            Efectivo contra entrega 
+                        </option>
 
-                    <label for="valor">
-                        Valor del pedido
-                    </label>
+                        <option value="nequi">
+                            Nequi/ Daviplata 
+                        </option>
 
-                    <input
-                        type="text"
-                        id="valor"
-                        name="valor"
-                        required
-                    >
+                    </select>
 
-                    <label for="pago">
-                        Método de pago
-                    </label>
-
-                    <input
-                        type="text"
-                        id="pago"
-                        name="pago"
-                        required
-                    >
+                    <span
+                        class="mensaje-error"
+                        id="error-metodo-pago">
+                        Selecciona un método de pago.
+                    </span>
 
                 </section>
 
+                <!-- OBSERVACIONES -->
                 <section class="observaciones">
 
                     <h2>Observaciones</h2>
@@ -158,27 +212,38 @@
                     <textarea
                         id="observaciones"
                         name="observaciones"
-                    ></textarea>
+                        rows="4"
+                        placeholder="Ejemplo: entregar después de las 5:00 p. m."s>
+                    </textarea>
 
                 </section>
 
-
-                <button type="submit">
+                <!-- BOTÓN -->
+                <button
+                    type="submit"
+                    class="btn">
                     Realizar pedido
                 </button>
 
+                <!-- MENSAJE DE ÉXITO -->
+                <div
+                    id="mensaje-exito"
+                    class="mensaje-exito">
+                    ¡Pedido recibido con éxito!
+                    Nos pondremos en contacto contigo pronto.
+
+                </div>
             </form>
-
         </section>
-
     </main>
 
+
+    <!-- PIE DE PÁGINA -->
     <footer class="footer">
         <p>
-            © 2026 Mercado La Esquina - Medellín, Colombia
+            &copy; 2026 El Roble - Medellín, Colombia
         </p>
     </footer>
-
     <!-- JAVASCRIPT -->
     <script src="js/app.js"></script>
 

@@ -1,130 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Catálogo | El roble</title>
-
     <link rel="stylesheet" href="style/styles.css">
 </head>
-
 <body>
 
     <header class="header">
-
         <nav class="nav">
-
-            <a href="index.html" class="logo">
-                🏪 El roble 
-            </a>
-
+            <a href="index.html" class="logo">🏪 El roble</a>
             <ul class="nav-links">
-
-                <li>
-                    <a href="productos.html">Catálogo</a>
-                </li>
-
-                <li>
-                    <a href="sobre-nosotros.html">Sobre nosotros</a>
-                </li>
-
-                <li>
-                    <a href="pedido.html">Realizar pedido</a>
-                </li>
-
+                <li><a href="productos.html">Catálogo</a></li>
+                <li><a href="sobre-nosotros.html">Sobre nosotros</a></li>
+                <li><a href="carrito.html">Carrito</a></li>
+                <li><a href="pedido.html">Realizar pedido</a></li>
             </ul>
-
         </nav>
-
     </header>
 
     <main>
-
         <section class="catalogo-header">
-
             <h1>Catálogo de productos</h1>
-
-            <p>
-                Encuentra los productos disponibles de nuestra
-                mercado El roble.
-            </p>
-
+            <p>Encuentra los productos disponibles en nuestro mercado El roble.</p>
         </section>
 
         <section class="filtros">
-
             <h2>Filtrar productos</h2>
-
             <div class="filtros-container">
-
-                <button
-                    class="filtro-btn activo"
-                    data-categoria="todos">
-                    Todos
-                </button>
-
-                <button
-                    class="filtro-btn"
-                    data-categoria="abarrotes">
-                    Abarrotes
-                </button>
-
-                <button
-                    class="filtro-btn"
-                    data-categoria="bebidas">
-                    Bebidas
-                </button>
-
-                <button
-                    class="filtro-btn"
-                    data-categoria="aseo">
-                    Aseo
-                </button>
-
-                <button
-                    class="filtro-btn"
-                    data-categoria="lacteos">
-                    Lácteos
-                </button>
-
-                <button
-                    class="filtro-btn"
-                    data-categoria="snacks">
-                    Snacks
-                </button>
-
+                <button class="filtro-btn activo" data-categoria="todos">Todos</button>
+                <button class="filtro-btn" data-categoria="abarrotes">Abarrotes</button>
+                <button class="filtro-btn" data-categoria="bebidas">Bebidas</button>
+                <button class="filtro-btn" data-categoria="aseo">Aseo</button>
+                <button class="filtro-btn" data-categoria="lacteos">Lácteos</button>
+                <button class="filtro-btn" data-categoria="snacks">Snacks</button>
             </div>
+        </section>
 
+        <section class="buscador">
+            <h2>Buscar producto</h2>
+
+            <label for="Buscar producto">
+                Escribe el nombre del producto 
+            </label>
+
+            <input
+                type="text"
+                id="buscar-producto"
+                placeholder="Ejemplo: arroz">
         </section>
 
         <section class="catalogo">
-
-            <div id="catalogo-productos" class="grid-prodcutos">
-
-                <!--
-                    Los productos serán generados
-                    luego mediante JavaScript.
-                -->
-
+            <div class="seccion-contenido">
+                <!-- Contenedor donde JavaScript generará las tarjetas -->
+                <div id="catalogo-productos" class="grid-productos">
+                    <!-- Los productos se insertan aquí dinámicamente -->
+                </div>
             </div>
-
         </section>
-
     </main>
 
     <footer class="footer">
-
-        <p>
-            © 2026 El roble - Medellín, Colombia
-        </p>
-
+        <p>&copy; 2026 El roble - Medellín, Colombia</p>
     </footer>
 
-    <!-- JAVASCRIPT -->
     <script src="js/app.js"></script>
-
 </body>
 </html>
-
