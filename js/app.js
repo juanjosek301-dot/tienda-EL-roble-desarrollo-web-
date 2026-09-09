@@ -284,3 +284,54 @@ botonesFiltro.forEach(function(boton) {
 });
 
 
+const botonesCategoria = document.querySelectorAll(".categoria-btn");
+
+botonesCategoria.forEach(function(boton) {
+    boton.addEventListener("click", function() {
+        let categoria = this.getAttribute("data-categoria");
+        window.location.href = "productos.html?categoria=" + categoria;
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    let params = new URLSearchParams(window.location.search);
+    let categoriaURL = params.get("categoria");
+
+    if (categoriaURL) {
+        let botonesFiltro = document.querySelectorAll(".filtro-btn");
+        
+        botonesFiltro.forEach(function(boton) {
+            if (boton.getAttribute("data-categoria") === categoriaURL) {
+                boton.click();
+            }
+        });
+    }
+});
+
+//productos destacados 
+
+function mostrarProductosDestacados() {
+    const contenedorDestacados = document.getElementById("productos-destacados-container");
+    
+    if (!contenedorDestacados) return;
+
+    const productosDestacados = productos.slice(0, 4);
+
+    productosDestacados.forEach(function(producto) {
+        const tarjeta = document.createElement("article");
+        tarjeta.classList.add("producto-card");
+
+        tarjeta.innerHTML = `
+            <img src="${producto.imagen}" alt="${producto.nombre}">
+            <div class="producto-info">
+                <h3>${producto.nombre}</h3>
+                <p>${producto.categoria}</p>
+                <strong>$${producto.precio.toLocaleString("es-CO")}</strong>
+            </div>
+        `;
+        
+        contenedorDestacados.appendChild(tarjeta);
+    });
+}
+
