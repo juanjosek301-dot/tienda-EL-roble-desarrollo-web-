@@ -1,5 +1,5 @@
 /* ========================================
-   VARIABLES CSS
+VARIABLES CSS
 ======================================== */
 
 :root {
@@ -72,7 +72,7 @@ body {
 
 
 /* ========================================
-   HEADER
+HEADER
 ======================================== */
 
 .header {
@@ -91,7 +91,7 @@ body {
 
 
 /* ========================================
-   NAVEGACIÓN - FLEXBOX
+NAVEGACIÓN - FLEXBOX
 ======================================== */
 
 .nav {
@@ -148,7 +148,7 @@ body {
 
 
 /* ========================================
-   SECCIONES GENERALES
+SECCIONES GENERALES
 ======================================== */
 
 section {
@@ -193,7 +193,7 @@ p {
 
 
 /* ========================================
-   HERO
+HERO
 ======================================== */
 
 .hero {
@@ -241,7 +241,7 @@ p {
 
 
 /* ========================================
-   CONTENEDORES DE SECCIONES
+CONTENEDORES DE SECCIONES
 ======================================== */
 
 .seccion-contenido {
@@ -270,7 +270,7 @@ p {
 
 
 /* ========================================
-   CATEGORÍAS
+CATEGORÍAS
 ======================================== */
 
 .categorias {
@@ -283,9 +283,15 @@ p {
     color: var(--texto-secundario);
 }
 
+/* Filtro seleccionado */
+.filtro-btn.activo {
+    background-color: var(--azul-principal);
+    color: var(--blanco);
+}
+
 
 /* ========================================
-   GRID DE CATEGORÍAS
+GRID DE CATEGORÍAS
 ======================================== */
 
 .categorias-grid {
@@ -724,7 +730,7 @@ p {
 }
 
 /* ========================================
-   CARRITO DE COMPRAS
+CARRITO DE COMPRAS
 ======================================== */
 
 .carrito-header {
@@ -791,6 +797,84 @@ p {
     justify-content: space-between;
     gap: 15px;
     margin-top: 25px;
+}
+
+/* ========================================
+Vista de productos 
+======================================== */
+
+.producto-card {
+    background-color: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    box-shadow: var(--sombra);
+
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-hover);
+}
+
+.producto-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: var(--blanco);
+}
+
+.producto-info {
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.producto-info h3 {
+    margin: 0;
+    font-size: 19px;
+    color: var(--azul-principal);
+}
+
+.producto-info p {
+    margin: 0;
+    color: var(--texto-secundario);
+    text-transform: capitalize;
+}
+
+.producto-info strong {
+    font-size: 21px;
+    color: var(--texto);
+    margin-top: 5px;
+}
+
+.agregar-carrito {
+    margin-top: 10px;
+    padding: 11px 15px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: var(--azul-principal);
+    color: var(--blanco);
+
+    font-size: 15px;
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+.agregar-carrito:hover {
+    background-color: var(--azul-secundario);
 }
 
 /* ========================================
