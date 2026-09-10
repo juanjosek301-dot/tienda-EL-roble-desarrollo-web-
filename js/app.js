@@ -215,12 +215,13 @@ let productos = [
     }
 ];
 
-let catalogo = document.getElementById("catalogo-productos")
+let catalogo = document.getElementById("catalogo-productos");
+let buscador = document.getElementById("buscar-producto");
 
 function mostrarProductos(listaProductos) {
     catalogo.innerHTML = "";
-
-    listaProductos.forEach(function(producto) {
+    
+    listaProductos.forEach(function (producto) {
         let tarjeta = document.createElement("article");
         tarjeta.classList.add("producto-card");
 
@@ -241,8 +242,11 @@ function mostrarProductos(listaProductos) {
         precio.textContent = "$" + producto.precio.toLocaleString("es-CO");
 
         let boton = document.createElement("button");
-        boton.textContent = "Agregar al carrito";
-        boton.classList.add("agregar-carrito");
+        boton.textContent = "Pedir ahora";
+        boton.classList.add("btn-pedir");
+        boton.addEventListener("click", function() {
+            window.location.href = "pedido.html";
+        });
 
         contenido.appendChild(nombre);
         contenido.appendChild(categoria);
@@ -333,5 +337,263 @@ function mostrarProductosDestacados() {
         
         contenedorDestacados.appendChild(tarjeta);
     });
+}
+
+mostrarProductosDestacados();
+
+if (buscador) {
+    buscador.addEventListener("input", function () {
+        // 1. Obtener el texto y convertirlo a minúsculas
+        const textoBusqueda = this.value.toLowerCase().trim();
+
+        // 2. Filtrar el arreglo de productos
+        const productosFiltrados = productos.filter(function (producto) {
+            // Comprobamos si el nombre del producto incluye el texto buscado
+            return producto.nombre.toLowerCase().includes(textoBusqueda);
+        });
+
+        // 3. Mostrar los resultados
+        mostrarProductos(productosFiltrados);
+    });
+}
+
+/* ================================================================
+8. FORMULARIO CON SELECCIÓN DE PRODUCTOS Y VALIDACIÓN
+----------------------------------------------------------------
+Al enviar (submit):
+a) Validamos cada campo con JavaScript.
+b) Si todo está bien, construimos un OBJETO con los datos.
+c) Lo convertimos a JSON y lo mostramos.
+================================================================ */
+
+// 8.1 Selección de elementos del DOM
+const formulario = document.getElementById("formulario-pedido");
+const contenedorForm = document.getElementById("contenedor-productos-form");
+const totalFormulario = document.getElementById("total-formulario");
+const mensajeExito = document.getElementById("mensaje-exito");
+
+// 8.2 Generar los productos en el formulario al cargar la página
+if (contenedorForm) {
+    productos.forEach(function (producto) {
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "producto-form-card";
+
+        tarjeta.innerHTML = `
+            <label>
+                <input type="checkbox" class="checkbox-producto" data-id="${producto.id}" data-precio="${producto.precio}">
+                ${producto.nombre}
+            </label>
+            <p class="precio-producto">$${producto.precio.toLocaleString("es-CO")}</p>
+            <input type="number" class="cantidad-producto" data-id="${producto.id}" min="1" value="1" disabled placeholder="Cantidad">
+        `;
+        contenedorForm.appendChild(tarjeta);
+    });
+
+    // 8.3 Eventos para los checkboxes y cantidades (Grupo C)
+    const checkboxes = document.querySelectorAll(".checkbox-producto");
+    const cantidades = document.querySelectorAll(".cantidad-producto");
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+            const inputCantidad = document.querySelector(`.cantidad-producto[data-id="${this.dataset.id}"]`);
+            // Habilitar o deshabilitar el input de cantidad
+            inputCantidad.disabled = !this.checked;
+            if (!this.checked) inputCantidad.value = 1;
+
+            calcularTotalFormulario();
+        });
+    });
+
+    cantidades.forEach(function (input) {
+        input.addEventListener("input", function () {
+            if (this.value < 1) this.value = 1;
+            calcularTotalFormulario();
+        });
+    });
+
+    // Función para calcular el total en tiempo real
+    function calcularTotalFormulario() {
+        let total = 0;
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                const precio = parseFloat(checkbox.dataset.precio);
+                const cantidad = parseInt(document.querySelector(`.cantidad-producto[data-id="${checkbox.dataset.id}"]`).value);
+                total += precio * cantidad;
+            }
+        });
+        if (totalFormulario) {
+            totalFormulario.textContent = "$" + total.toLocaleString("es-CO");
+        }
+    }
+}
+
+// 8.4 Validación del formulario al enviar (Grupo B)
+if (formulario) {
+    formulario.addEventListener("submit", function (evento) {
+        // Evita que el formulario recargue la página (comportamiento por defecto)
+        evento.preventDefault();
+
+        // Leemos los valores actuales de los campos del DOM
+        const nombre = document.getElementById("nombre").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const telefono = document.getElementById("telefono").value.trim();
+        const direccion = document.getElementById("direccion").value.trim();
+        const metodoPago = document.getElementById("metodo-pago").value;
+        const productosSeleccionados = document.querySelectorAll(".checkbox-producto:checked");
+
+        // Empezamos asumiendo que todo es válido
+        let esValido = true;
+
+        // --- Validación: productos (al menos uno seleccionado) ---
+        if (productosSeleccionados.length === 0) {
+            mostrarError("productos", "Debes seleccionar al menos un producto.");
+            esValido = false;
+        } else {
+            limpiarError("productos");
+        }
+
+        // --- Validación: nombre (requerido, mínimo 3 caracteres) ---
+        if (nombre.length < 3) {
+            mostrarError("nombre", "El nombre debe tener al menos 3 caracteres.");
+            esValido = false;
+        } else {
+            limpiarError("nombre");
+        }
+
+        // --- Validación: email (requerido y con formato) ---
+        const patronEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!patronEmail.test(email)) {
+            mostrarError("email", "Escribe un correo válido (ej: nombre@correo.com).");
+            esValido = false;
+        } else {
+            limpiarError("email");
+        }
+
+        // --- Validación: teléfono (7 a 10 dígitos) ---
+        const patronTelefono = /^[0-9]{7,10}$/;
+        if (!patronTelefono.test(telefono)) {
+            mostrarError("telefono", "Ingresa un teléfono válido (7 a 10 dígitos).");
+            esValido = false;
+        } else {
+            limpiarError("telefono");
+        }
+
+        // --- Validación: dirección (mínimo 5 caracteres) ---
+        if (direccion.length < 5) {
+            mostrarError("direccion", "La dirección debe tener al menos 5 caracteres.");
+            esValido = false;
+        } else {
+            limpiarError("direccion");
+        }
+
+        // --- Validación: método de pago (debe seleccionar uno) ---
+        if (metodoPago === "") {
+            mostrarError("metodo-pago", "Selecciona un método de pago.");
+            esValido = false;
+        } else {
+            limpiarError("metodo-pago");
+        }
+
+        // Si algún campo falló, no seguimos
+        if (!esValido) {
+            if (mensajeExito) mensajeExito.classList.remove("visible");
+            return;
+        }
+
+    /* ----------------------------------------------------------------
+    CREACIÓN DEL JSON a partir de los datos del formulario
+    ----------------------------------------------------------------
+    Construimos un OBJETO de JavaScript con los valores.
+    Las claves las escribimos nosotros; los valores vienen del form.
+    ---------------------------------------------------------------- */
+                const datosPedido = {
+                        cliente: {
+                                nombre: nombre,
+                                email: email,
+                                telefono: telefono,
+                                direccion: direccion
+                        },
+                        productos: Array.from(productosSeleccionados).map(function (cb) {
+                                return {
+                                        nombre: cb.parentElement.textContent.trim(),
+                                        cantidad: document.querySelector(`.cantidad-producto[data-id="${cb.dataset.id}"]`).value
+                                };
+                        }),
+                        metodoPago: metodoPago,
+                        total: totalFormulario ? totalFormulario.textContent : "$0",
+                        fecha: new Date().toLocaleString("es-CO"),
+        };
+
+                console.log("Objeto de JS del pedido:", datosPedido);
+                // JSON.stringify convierte el OBJETO a texto en formato JSON.
+                // El segundo y tercer parámetro (null, 2) lo indentan bonito.
+                const textoJSON = JSON.stringify(datosPedido, null, 2);
+                console.log("JSON generado:\n", textoJSON);
+
+    /* ----------------------------------------------------------------
+    Acceso a las propiedades del objeto que acabamos de crear
+       ---------------------------------------------------------------- */
+    // Dot notation & template literals (la forma más común):
+                if (mensajeExito) {
+                        mensajeExito.textContent = `¡Gracias, ${datosPedido.cliente.nombre}! Tu pedido por ${datosPedido.total} ha sido recibido. Te contactaremos al correo ${datosPedido.cliente.email}.`;
+                        mensajeExito.classList.add("visible");
+                }
+
+                formulario.reset();
+
+                const todosCheckboxes = document.querySelectorAll(".checkbox-producto");
+
+                todosCheckboxes.forEach(function(cb) {
+                    cb.checked = false;
+                    const inputCantidad = document.querySelector(`.cantidad-producto[data-id="${cb.dataset.id}"]`);
+                    if (inputCantidad) {
+                        inputCantidad.disabled = true;
+                        inputCantidad.value = 1;
+                    }
+                });
+
+                // Recalcular total
+                if (totalFormulario) {
+                        totalFormulario.textContent = "$0";
+                }
+
+                // Ocultar mensaje después de 5 segundos
+                setTimeout(function () {
+                        if (mensajeExito) mensajeExito.classList.remove("visible");
+                }, 5000);
+        });
+}
+
+/* ================================================================
+9. FUNCIONES AUXILIARES para mostrar/limpiar errores en el DOM
+----------------------------------------------------------------
+Usamos el id del campo para armar el id del <span> de error.
+Aquí bracket notation es cómoda para construir ids dinámicos.
+================================================================ */
+function mostrarError(idCampo, texto) {
+        const spanError = document.getElementById("error-" + idCampo);
+        const input = document.getElementById(idCampo);
+
+        if (spanError) {
+                spanError.textContent = texto;
+                spanError.classList.add("visible");
+        }
+        if (input) {
+                input.classList.add("input-error");
+        }
+}
+
+function limpiarError(idCampo) {
+    
+        const spanError = document.getElementById("error-" + idCampo);
+        const input = document.getElementById(idCampo);
+
+        if (spanError) {
+                spanError.textContent = "";
+                spanError.classList.remove("visible");
+        }
+        if (input) {
+                input.classList.remove("input-error");
+        }
 }
 

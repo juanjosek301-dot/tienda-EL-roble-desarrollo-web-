@@ -51,41 +51,26 @@
             <h1>Realizar pedido</h1>
 
             <p>
-                Completa el siguiente formulario para realizar
-                tu pedido en El Roble.
+                Selecciona los productos que deseas y completa tus datos para finalizar la compra
             </p>
-
         </section>
 
-
-        <!-- FORMULARIO -->
         <section class="pedido">
-
             <form id="formulario-pedido" novalidate>
 
-                <section class="resumen-pedido">
-
-                    <h2>Resumen del pedido</h2>
-
-                    <div id="resumen-productos">
-                        <!-- 
-                            JavaScript mostrará aquí
-                            los productos del carrito.
-                        -->
-
-                        <P>
-                            Los productos seleccionados aparecerán aquí.
-                        </P>
+                <section class="seleccion-productos">
+                    <h2>1. Selecciona tus productos</h2>
+                    <p class="instruccion">Marca los productos que deseas comprar y especifica la cantidad.</p>
+                    
+                    <div id="contenedor-productos-form" class="grid-productos-form"></div>
+                    
+                    <span class="mensaje-error" id="error-productos">Debes seleccionar al menos un producto.</span>
+                    
+                    <div class="total-pedido">
+                        <p>Total a pagar: <strong id="total-formulario">$0</strong></p>
                     </div>
-
-                    <p>
-                        total:
-                        <strong id="resumen-total">$0</strong>
-                    </p>
-
                 </section>
 
-                <!-- INFORMACIÓN DEL CLIENTE -->
                 <section class="datos-cliente">
 
                     <h2>Información del cliente</h2>
@@ -159,8 +144,6 @@
 
                 </section>
 
-                <!-- MÉTODO DE PAGO -->
-
                 <section class="metodo-pago">
 
                     <h2>Metodo de pago</h2>
@@ -196,7 +179,6 @@
 
                 </section>
 
-                <!-- OBSERVACIONES -->
                 <section class="observaciones">
 
                     <h2>Observaciones</h2>
@@ -214,14 +196,12 @@
 
                 </section>
 
-                <!-- BOTÓN -->
                 <button
                     type="submit"
                     class="btn">
                     Realizar pedido
                 </button>
 
-                <!-- MENSAJE DE ÉXITO -->
                 <div
                     id="mensaje-exito"
                     class="mensaje-exito">
