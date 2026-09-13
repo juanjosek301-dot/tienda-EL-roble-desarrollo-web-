@@ -9,7 +9,7 @@ El proyecto resuelve el problema de tener que ir físicamente al mercado para co
 
 ##  Link al sitio en Vercel
 
-npx plugins add vercel/vercel-plugin
+https://tienda-el-roble-desarrollo-web.vercel.app/
 
 ##  Capturas del sitio
 
