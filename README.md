@@ -11,8 +11,6 @@ El proyecto resuelve el problema de tener que ir físicamente al mercado para co
 
 npx plugins add vercel/vercel-plugin
 
-*(Reemplaza este link con el tuyo real cuando hagas el deploy)* PEndiente 
-
 ##  Capturas del sitio
 
 ### Vista en escritorio
