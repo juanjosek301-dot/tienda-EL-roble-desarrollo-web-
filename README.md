@@ -9,7 +9,7 @@ El proyecto resuelve el problema de tener que ir físicamente al mercado para co
 
 ##  Link al sitio en Vercel
 
- [https://el-roble.vercel.app](https://el-roble.vercel.app)
+npx plugins add vercel/vercel-plugin
 
 *(Reemplaza este link con el tuyo real cuando hagas el deploy)* PEndiente 
 
