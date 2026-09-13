@@ -1486,7 +1486,6 @@ RESPONSIVE - CELULAR
         gap: 10px;
     }
 
-
     /* Hero */
 
     .hero {
@@ -1507,7 +1506,6 @@ RESPONSIVE - CELULAR
     h1 {
         font-size: 32px;
     }
-
     h2 {
         font-size: 24px;
     }
@@ -1545,4 +1543,156 @@ RESPONSIVE - CELULAR
 
         padding: 25px;
     }
+}
+
+/* ========================================
+MODO OSCURO COMPLETO (Variables + Legibilidad)
+======================================== */
+
+/* 1. Redefinición de la paleta de colores para modo oscuro */
+body.dark-mode {
+    --azul-principal: #64B5F6;
+    --azul-secundario: #90CAF9;
+    --azul-oscuro: #BBDEFB;
+    --azul-claro: #1E3A5F;
+    --azul-fondo: #0D1B2A;
+    --azul-suave: #152238;
+    
+    --blanco: #1B2838;
+    --texto: #E8E8E8;          
+    --texto-secundario: #B0BEC5; 
+    --borde: #2C3E50;
+
+    --rojo-error: #EF5350;
+    --rojo-claro: #3E1A1A;
+    --verde-exito: #66BB6A;
+    --verde-claro: #1B3A1B;
+
+    --sombra: 0 4px 10px rgba(0, 0, 0, 0.4);
+    --sombra-hover: 0 6px 15px rgba(0, 0, 0, 0.6);
+}
+
+/* 2. Ajustes de fondo para Header y Tarjetas */
+body.dark-mode .header {
+    background-color: #0D1B2A;
+    border-bottom-color: #1E3A5F;
+}
+
+body.dark-mode .seccion-contenido,
+body.dark-mode .producto-card,
+body.dark-mode .producto-form-card,
+body.dark-mode #formulario-pedido,
+body.dark-mode .cta-pedido .seccion-contenido,
+body.dark-mode .quienes-somos .seccion-contenido,
+body.dark-mode .que-ofrecemos .seccion-contenido,
+body.dark-mode .compromiso .seccion-contenido {
+    background-color: #1B2838;
+    border-color: #2C3E50;
+}
+
+body.dark-mode .hero-contenido,
+body.dark-mode .presentacion-contenido {
+    background-color: rgba(27, 40, 56, 0.95);
+}
+
+/* 3. Ajustes de Botones de Filtros y Categorías */
+body.dark-mode .filtro-btn,
+body.dark-mode .categoria-btn {
+    background-color: #1B2838;
+    border-color: #2C3E50;
+    color: var(--azul-principal);
+}
+
+body.dark-mode .filtro-btn.activo,
+body.dark-mode .categoria-btn:hover {
+    background-color: var(--azul-principal);
+    color: #0D1B2A;
+}
+
+/* 4. LEGIBILIDAD Y CONTRASTE DE TEXTO (¡Lo más importante!) */
+
+/* Títulos: Azul brillante para que resalten sobre el fondo oscuro */
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h3 {
+    color: var(--azul-principal);
+}
+
+/* Párrafos y texto normal: Blanco suave para no cansar la vista */
+body.dark-mode p, 
+body.dark-mode label, 
+body.dark-mode span, 
+body.dark-mode li {
+    color: var(--texto);
+}
+
+/* Enlaces: Azul muy claro para que se note que son clickeables */
+body.dark-mode a {
+    color: #90CAF9;
+}
+body.dark-mode a:hover {
+    color: #BBDEFB;
+}
+
+/* Precios y totales: Azul brillante y negrita */
+body.dark-mode .producto-info strong, 
+body.dark-mode .precio-producto, 
+body.dark-mode .total-pedido strong {
+    color: var(--azul-principal);
+}
+
+/* Inputs y Selects: Texto claro sobre fondo oscuro */
+body.dark-mode input, 
+body.dark-mode textarea, 
+body.dark-mode select {
+    background-color: #0D1B2A;
+    color: var(--texto);
+    border-color: #2C3E50;
+}
+
+body.dark-mode input::placeholder, 
+body.dark-mode textarea::placeholder {
+    color: #78909C; 
+}
+
+/* Mensajes de error y éxito */
+body.dark-mode .mensaje-error { color: #EF5350; }
+body.dark-mode .mensaje-exito { color: #66BB6A; }
+
+/* 5. Estilo del Botón Toggle */
+.toggle-modo {
+    background: none;
+    border: 2px solid var(--azul-principal);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-left: 15px;
+    flex-shrink: 0;
+}
+
+.toggle-modo:hover {
+    transform: scale(1.1);
+    background-color: var(--azul-claro);
+}
+
+/* Botones en modo oscuro: texto oscuro para contrastar con fondo claro */
+body.dark-mode .btn,
+body.dark-mode .btn-pedir,
+body.dark-mode .categoria-btn,
+body.dark-mode .filtro-btn.activo {
+    color: #0D1B2A !important; /* Azul muy oscuro, casi negro */
+    font-weight: 700;
+}
+
+/* Si el botón tiene fondo azul claro, el texto debe ser oscuro */
+body.dark-mode .btn:hover,
+body.dark-mode .btn-pedir:hover {
+    color: #0D1B2A !important;
+    background-color: #90CAF9; 
 }

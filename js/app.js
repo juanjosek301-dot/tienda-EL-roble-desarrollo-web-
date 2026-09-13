@@ -397,7 +397,6 @@ if (contenedorForm) {
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener("change", function () {
             const inputCantidad = document.querySelector(`.cantidad-producto[data-id="${this.dataset.id}"]`);
-            // Habilitar o deshabilitar el input de cantidad
             inputCantidad.disabled = !this.checked;
             if (!this.checked) inputCantidad.value = 1;
 
@@ -596,5 +595,45 @@ function limpiarError(idCampo) {
         if (input) {
                 input.classList.remove("input-error");
         }
+}
+
+/* ================================================================
+MODO OSCURO CON TOGGLE (Bonificación +4 pts)
+----------------------------------------------------------------
+- Alterna entre modo claro y oscuro al hacer clic en el botón.
+- Guarda la preferencia en localStorage para recordarla.
+- Al cargar la página, recupera la preferencia guardada.
+================================================================ */
+
+const toggleModo = document.getElementById("toggle-modo");
+
+
+function activarModoOscuro() {
+    document.body.classList.add("dark-mode");
+    if (toggleModo) toggleModo.textContent = "☀️"; 
+    localStorage.setItem("modo", "oscuro");
+}
+
+function activarModoClaro() {
+    document.body.classList.remove("dark-mode");
+    if (toggleModo) toggleModo.textContent = "🌙"; 
+    localStorage.setItem("modo", "claro");
+}
+
+const modoGuardado = localStorage.getItem("modo");
+if (modoGuardado === "oscuro") {
+    activarModoOscuro();
+} else {
+    activarModoClaro();
+}
+
+if (toggleModo) {
+    toggleModo.addEventListener("click", function() {
+        if (document.body.classList.contains("dark-mode")) {
+            activarModoClaro();
+        } else {
+            activarModoOscuro();
+        }
+    });
 }
 
