@@ -332,6 +332,7 @@ function mostrarProductosDestacados() {
                 <h3>${producto.nombre}</h3>
                 <p>${producto.categoria}</p>
                 <strong>$${producto.precio.toLocaleString("es-CO")}</strong>
+                <button class="btn-pedir" onclick="window.location.href='pedido.html'">Pedir ahora </button>
             </div>
         `;
         
