@@ -2,9 +2,9 @@
 
 "use client"; // Necesario porque usa hooks de React (cliente)
 
-import { useState, useEffect } from "react";
-import { Product } from "../domain/types";
-import { getProducts } from "../application/getProducts";
+import { useEffect, useState } from "react";
+import type { Product } from "../domain/types";
+import { getProducts } from "../services/productService";
 
 /**
  * Hook personalizado para manejar el estado de productos.
@@ -13,12 +13,11 @@ import { getProducts } from "../application/getProducts";
  * - useState: Memoria del componente (productos, loading, error, page)
  * - useEffect: Efecto secundario (llamar a la API cuando cambia la página)
  */
-export function useProducts() {
+export function useProducts(page = 1, categoria?: string, buscar?: string) {
   // Estados (memoria del componente)
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   // Efecto: Cargar productos cuando cambia la página
@@ -26,18 +25,26 @@ export function useProducts() {
     setLoading(true);
     setError(null);
 
-    getProducts(page)
+    let vigente = true;
+
+    getProducts({ page, categoria, buscar })
       .then((response) => {
+        if (!vigente) return;
         setProducts(response.data);
         setTotalPages(response.pagination.totalPages);
       })
-      .catch(() => {
+      .catch((error: unknown) => {
+        if (!vigente) return;
         setError("Error al cargar los productos");
       })
       .finally(() => {
-        setLoading(false);
+        if (vigente) setLoading(false);
       });
-  }, [page]); // Solo se re-ejecuta cuando cambia 'page'
 
-  return { products, loading, error, page, totalPages, setPage };
+    return () => {
+      vigente = false;
+    };
+  }, [page, categoria, buscar]);
+
+  return { products, loading, error, page, totalPages };
 }

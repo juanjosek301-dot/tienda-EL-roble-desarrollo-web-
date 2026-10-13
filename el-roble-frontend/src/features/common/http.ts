@@ -9,8 +9,9 @@ import { API_BASE_URL } from "./config";
  * 3. Centraliza la URL base de la API
  */
 export async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
-  // Obtener token del localStorage (sesión del usuario)
-  const token = localStorage.getItem("token");
+  // This client is called by client-side services/hooks. Guard access so it is
+  // also safe if a caller is rendered during server-side work.
+  const token = typeof window === "undefined" ? null : window.localStorage.getItem("token");
 
   const config: RequestInit = {
     ...options,
@@ -25,9 +26,11 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
   const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
   // Si el token expiró o es inválido (401), limpiar sesión y redirigir a login
-  if (response.status === 401) {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
+  if (response.status === 401 && !endpoint.startsWith("/api/auth/")) {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("token");
+      window.location.assign("/login");
+    }
   }
 
   return response;
