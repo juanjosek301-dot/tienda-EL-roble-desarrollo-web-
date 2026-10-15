@@ -3,12 +3,12 @@
 
     export default function SobreElRoble() {
     return (
-        <section className="py-12 px-4 mb-12">
-        <div className="max-w-[1200px] mx-auto bg-blue-950/50 border border-blue-800 rounded-2xl p-8 text-center">
-            <h2 className="text-2xl font-bold text-blue-300 mb-4">
+        <section className="mb-12 bg-blue-50 px-4 py-12">
+        <div className="mx-auto max-w-[1200px] rounded-2xl border border-blue-100 bg-white p-6 text-center shadow-sm sm:p-8">
+            <h2 className="mb-4 text-2xl font-bold text-blue-800">
             Sobre El Roble
             </h2>
-            <p className="text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+            <p className="mx-auto mb-6 max-w-2xl leading-relaxed text-slate-600">
             El Roble es un minimercado ubicado en Medellín que ofrece productos de
             la canasta básica, bebidas, lácteos, artículos de aseo y snacks para
             el hogar, con la mejor calidad y precios accesibles.

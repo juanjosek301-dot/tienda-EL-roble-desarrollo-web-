@@ -6,12 +6,12 @@ import { PRODUCT_CATEGORIES } from "../domain/categories";
 
 export default function Categorias() {
     return (
-        <section className="py-12 px-4">
-            <div className="max-w-[1200px] mx-auto bg-blue-950/50 border border-blue-800 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-blue-300 text-center mb-2">
+        <section className="bg-blue-50 px-4 py-12">
+            <div className="mx-auto max-w-[1200px] rounded-2xl border border-blue-100 bg-white p-6 shadow-sm sm:p-8">
+            <h2 className="mb-2 text-center text-2xl font-bold text-blue-800">
                 Compra por categorías
             </h2>
-            <p className="text-gray-400 text-center mb-6">
+            <p className="mb-6 text-center text-slate-600">
             Selecciona una categoría para encontrar los productos que necesitas.
             </p>
 
@@ -20,7 +20,7 @@ export default function Categorias() {
                 <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.id}`}
-                className="flex items-center justify-center gap-2 py-3 px-4 rounded-lg border bg-slate-900 border-blue-800 text-gray-300 hover:border-blue-600 hover:text-white transition-all"
+                className="flex items-center justify-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-3 text-slate-700 transition-all hover:border-blue-500 hover:bg-blue-100 sm:px-4"
             >
             <span className="text-xl" aria-hidden="true">{cat.icon}</span>
                 <span className="font-medium">{cat.name}</span>

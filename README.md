@@ -1,7 +1,99 @@
 
-# 🏪 El roble - Minimercado en línea
+# 🏪 El Roble — Minimercado
 
-## Descripción del proyecto
+Este repositorio contiene el prototipo original del sitio y el frontend actual desarrollado con Next.js. En esta etapa estamos trabajando únicamente el frontend; el backend y la API todavía no forman parte del proyecto.
+
+## Aplicación actual: frontend Next.js
+
+La aplicación actual se encuentra en [`el-roble-frontend/`](el-roble-frontend/). Incluye las páginas de inicio, catálogo, información del minimercado, pedido, registro, inicio de sesión, mis pedidos y administración del catálogo.
+
+Consulta la sección [Entrega actual: frontend](#entrega-actual-frontend) para ver los requisitos, la configuración, cómo ejecutar la aplicación y qué funciones dependen de una API.
+
+> El catálogo, el registro, el inicio de sesión, los pedidos y la administración requieren una API para trabajar con datos reales. El repositorio todavía no incluye backend ni credenciales de prueba.
+
+## Entrega actual: frontend
+
+### Despliegues
+
+- **Frontend Next.js:** pendiente de publicar. El enlace de Vercel que aparece en la documentación del prototipo original corresponde al sitio anterior, no confirma un despliegue de esta aplicación Next.js.
+- **Backend/API:** pendiente de implementar y desplegar; no existe un enlace todavía.
+- **Prototipo original:** [sitio anterior en Vercel](https://tienda-el-roble-desarrollo-web.vercel.app/).
+
+### Ejecutar en local
+
+Requisitos: Node.js compatible con la versión de Next.js del proyecto y npm.
+
+```bash
+cd el-roble-frontend
+npm install
+npm run dev
+```
+
+Abre [http://localhost:3000](http://localhost:3000). Para revisar el código con ESLint o generar la compilación de producción:
+
+```bash
+npm run lint
+npm run build
+```
+
+### Variables de entorno
+
+El frontend usa `NEXT_PUBLIC_API_HOST` como URL base de la API. Si no se define, el código utiliza `http://localhost:3001`. Para configurarla en local, crea `el-roble-frontend/.env.local`:
+
+```env
+NEXT_PUBLIC_API_HOST=http://localhost:3001
+```
+
+Como el backend aún no existe en este proyecto, esa dirección no ofrece actualmente un servicio. Las páginas se pueden abrir, pero las operaciones con datos reales no se pueden completar.
+
+### Flujo de inicio de sesión y rutas protegidas
+
+1. En `/login`, el usuario escribe su correo y contraseña. `LoginForm` envía los datos al servicio de autenticación.
+2. `authService` prepara un `POST` a `/api/auth/login`, usando la URL configurada en `NEXT_PUBLIC_API_HOST`.
+3. Cuando la API responde correctamente, el frontend espera recibir un token y los datos del usuario. `AuthProvider` los guarda en el estado de sesión y en el almacenamiento local del navegador.
+4. `LoginForm` redirige a la ruta solicitada en el parámetro `next` o al inicio.
+5. `AuthGuard` comprueba en el frontend si existe un usuario y, para `/admin`, si su rol es `admin`. Si no hay sesión, redirige a `/login`; si el rol no corresponde, redirige a `/mis-pedidos`.
+6. En las solicitudes a rutas protegidas de la API, `fetchWithAuth` adjunta `Authorization: Bearer <token>`. Si recibe `401`, limpia la sesión y envía al usuario al inicio de sesión.
+
+**Estado actual:** este flujo está preparado en el frontend, pero no se puede completar de extremo a extremo hasta que exista la API. `AuthGuard` es una protección visual del lado del cliente; el backend deberá validar el token y los permisos en cada endpoint protegido.
+
+### Almacenamiento del token y riesgo
+
+El token se guarda actualmente en `localStorage` junto con los datos del usuario. Esto permite recuperarlo al recargar la página, pero cualquier JavaScript que llegue a ejecutarse con una vulnerabilidad XSS podría leerlo. Para producción se debe valorar una cookie `HttpOnly`, `Secure` y `SameSite`, junto con las medidas de protección CSRF correspondientes.
+
+### Respuestas `401` y `403`
+
+- **`401 Unauthorized`:** falta autenticación o el token es inválido o venció. En el frontend, por ejemplo, una petición protegida a la API de pedidos que responde `401` provoca que `fetchWithAuth` borre la sesión y redirija a `/login`. El servicio de login también interpreta `401` como credenciales incorrectas. No hay API conectada ahora, así que estos casos todavía no se han verificado contra un servidor real.
+- **`403 Forbidden`:** el usuario sí está autenticado, pero no tiene permiso para la acción. El ejemplo esperado es un usuario con rol `user` que intenta crear o eliminar un producto en un endpoint de administración. El frontend redirige a usuarios no administradores desde `/admin`, pero la API deberá responder `403` y hacer su propia comprobación cuando se implemente.
+
+En el estado actual, el tratamiento explícito de `403` en respuestas de la API está pendiente; no debe confundirse la redirección del `AuthGuard` con una respuesta `403` del servidor.
+
+### Credenciales de prueba
+
+**Pendientes:** no existe todavía el backend ni un `seed` que cree usuarios de entrega. No hay credenciales admin/user verificadas para publicar. Cuando estén disponibles, completar esta tabla con cuentas exclusivas del ambiente de entrega; nunca incluir credenciales personales o de producción.
+
+| Rol | Correo | Contraseña | Estado |
+|---|---|---|---|
+| `admin` | Pendiente del seed | Pendiente del seed | No disponible |
+| `user` | Pendiente del seed | Pendiente del seed | No disponible |
+
+### Evidencia de Network
+
+**Pendiente de la API:** aún no se puede aportar una captura que muestre una petición protegida exitosa con el header `Authorization`. Cuando haya backend, se agregará aquí una captura de DevTools → Network que muestre método, endpoint, estado y header (con el token oculto). No publicar tokens activos en el README.
+
+### Decisiones técnicas y uso de IA
+
+Organizamos el frontend por funcionalidades (`auth`, `productos` y `pedidos`) para mantener juntas las páginas, sus tipos, reglas, hooks y servicios relacionados. Las rutas de `app/` se mantienen como entradas pequeñas que muestran los componentes de cada página. Centralizamos las solicitudes HTTP para adjuntar el token y tratar la expiración de sesión en un solo lugar.
+
+Usamos Flexbox para alinear elementos de navegación y controles en una dirección, y Grid para distribuir categorías y tarjetas de productos en columnas adaptables. Las validaciones del pedido y del registro dan respuesta inmediata en la interfaz, pero no sustituyen las validaciones del servidor.
+
+Usamos un asistente de IA para revisar la estructura, analizar errores y proponer documentación y ajustes. Contrastamos las propuestas con el repositorio y corregimos las que daban por existente un backend o mantenían estilos oscuros que no correspondían al diseño esperado. Esta explicación describe el trabajo de esta etapa; antes de entregar, el equipo debe revisarla y personalizarla con sus propias palabras.
+
+## Prototipo original
+
+La documentación y capturas siguientes corresponden al sitio original hecho con HTML, CSS y JavaScript. Se conservan como referencia del diseño inicial; no describen necesariamente el estado visual actual de la aplicación Next.js.
+
+## Descripción del prototipo
 
 El roble es una página web para un minimercado ubicado en Medellín que vende productos de la canasta familiar. El sitio permite a los clientes ver el catálogo de productos organizados por categorías (abarrotes, bebidas, aseo, lácteos y snacks), buscar productos específicos por nombre, y realizar pedidos directamente desde la página.
 

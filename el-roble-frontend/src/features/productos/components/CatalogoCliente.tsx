@@ -30,17 +30,17 @@ function CatalogoContenido() {
   }
 
   return (
-    <div className="mx-auto min-h-[70vh] max-w-7xl px-4 py-10 text-slate-100 sm:px-6 lg:px-8">
+    <div className="mx-auto min-h-[70vh] max-w-7xl px-4 py-10 text-slate-800 sm:px-6 lg:px-8">
       <header className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-blue-300 sm:text-4xl">Catálogo de productos</h1>
-        <p className="mt-3 text-slate-300">Encuentra los productos disponibles en nuestro mercado El Roble.</p>
+        <h1 className="text-3xl font-bold text-blue-800 sm:text-4xl">Catálogo de productos</h1>
+        <p className="mt-3 text-slate-600">Encuentra los productos disponibles en nuestro mercado El Roble.</p>
       </header>
 
-      <section className="mb-6 rounded-2xl border border-blue-900 bg-blue-950/50 p-5" aria-label="Filtros del catálogo">
+      <section className="mb-6 rounded-2xl border border-blue-100 bg-white p-5 shadow-sm" aria-label="Filtros del catálogo">
         <div className="mb-5 flex flex-wrap justify-center gap-2">
-          <button type="button" onClick={() => updateQuery({ categoria: "", page: "1" })} className="rounded-full border border-blue-700 px-4 py-2 text-sm hover:bg-blue-800">Todas</button>
+          <button type="button" onClick={() => updateQuery({ categoria: "", page: "1" })} aria-pressed={!categoria} className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-slate-700 hover:border-blue-400 hover:bg-blue-100 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white">Todas</button>
           {PRODUCT_CATEGORIES.map((item) => (
-            <button key={item.id} type="button" onClick={() => updateQuery({ categoria: item.id, page: "1" })} aria-pressed={categoria === item.id} className="rounded-full border border-blue-700 px-4 py-2 text-sm hover:bg-blue-800 aria-pressed:bg-blue-700">
+            <button key={item.id} type="button" onClick={() => updateQuery({ categoria: item.id, page: "1" })} aria-pressed={categoria === item.id} className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-slate-700 hover:border-blue-400 hover:bg-blue-100 aria-pressed:border-blue-700 aria-pressed:bg-blue-700 aria-pressed:text-white">
               {item.name}
             </button>
           ))}
@@ -48,9 +48,9 @@ function CatalogoContenido() {
         <SearchForm key={buscar} initialValue={buscar} onSearch={(value) => updateQuery({ buscar: value, page: "1" })} />
       </section>
 
-      {loading && <p className="py-12 text-center" role="status">Cargando productos…</p>}
-      {error && <p className="py-12 text-center text-red-300" role="alert">{error}. Verifica que la API esté disponible e inténtalo de nuevo.</p>}
-      {!loading && !error && products.length === 0 && <p className="py-12 text-center text-slate-300">No encontramos productos con esos filtros.</p>}
+      {loading && <p className="py-12 text-center text-slate-600" role="status">Cargando productos…</p>}
+      {error && <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-6 text-center text-red-800" role="alert">{error}. Verifica que la API esté disponible e inténtalo de nuevo.</p>}
+      {!loading && !error && products.length === 0 && <p className="py-12 text-center text-slate-600">No encontramos productos con esos filtros.</p>}
 
       {!loading && !error && products.length > 0 && (
         <>
@@ -59,7 +59,7 @@ function CatalogoContenido() {
           </div>
           <nav className="mt-9 flex items-center justify-center gap-4" aria-label="Paginación del catálogo">
             <button type="button" disabled={page <= 1} onClick={() => updateQuery({ page: String(page - 1) })} className="rounded-lg border border-blue-700 px-4 py-2 disabled:cursor-not-allowed disabled:opacity-40">Anterior</button>
-            <span aria-live="polite">Página {page} de {totalPages}</span>
+            <span aria-live="polite" className="text-slate-700">Página {page} de {totalPages}</span>
             <button type="button" disabled={page >= totalPages} onClick={() => updateQuery({ page: String(page + 1) })} className="rounded-lg border border-blue-700 px-4 py-2 disabled:cursor-not-allowed disabled:opacity-40">Siguiente</button>
           </nav>
         </>
@@ -79,7 +79,7 @@ function SearchForm({ initialValue, onSearch }: { initialValue: string; onSearch
   return (
     <form onSubmit={submitSearch} className="mx-auto flex max-w-xl gap-2">
       <label className="sr-only" htmlFor="buscar-producto">Buscar producto</label>
-      <input id="buscar-producto" value={value} onChange={(event) => setValue(event.target.value)} placeholder="Buscar producto, por ejemplo: arroz" className="min-w-0 flex-1 rounded-lg border border-blue-800 bg-slate-900 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <input id="buscar-producto" value={value} onChange={(event) => setValue(event.target.value)} placeholder="Buscar producto, por ejemplo: arroz" className="min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       <button type="submit" className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500">Buscar</button>
     </form>
   );

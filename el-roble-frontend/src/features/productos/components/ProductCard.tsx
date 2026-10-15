@@ -12,7 +12,7 @@ export default function ProductCard({ product, variant = "catalog" }: ProductCar
   const featured = variant === "featured";
 
   return (
-    <article className={`flex h-full flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1 ${featured ? "border-blue-800 bg-slate-900 hover:border-blue-500" : "border-blue-100 bg-white shadow-md hover:shadow-xl"}`}>
+    <article className={`flex h-full flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1 ${featured ? "border-blue-100 bg-white shadow-md hover:border-blue-300 hover:shadow-xl" : "border-blue-100 bg-white shadow-md hover:shadow-xl"}`}>
       <div className={`relative flex h-48 items-center justify-center overflow-hidden ${featured ? "bg-white" : "bg-gray-100"}`}>
         <Image
           src={product.imagen}
@@ -25,15 +25,15 @@ export default function ProductCard({ product, variant = "catalog" }: ProductCar
       </div>
 
       <div className="p-5 flex flex-col flex-grow">
-        <span className={`mb-2 text-xs font-bold uppercase tracking-wider ${featured ? "text-center text-blue-300" : "text-blue-500"}`}>
+        <span className={`mb-2 text-xs font-bold uppercase tracking-wider ${featured ? "text-center" : ""} text-blue-600`}>
           {product.categoria}
         </span>
-        <h3 className={`mb-2 text-lg font-bold leading-tight ${featured ? "text-center text-white" : "text-gray-800"}`}>
+        <h3 className={`mb-2 text-lg font-bold leading-tight text-gray-800 ${featured ? "text-center" : ""}`}>
           {product.nombre}
         </h3>
 
         <div className={`mt-auto flex items-center justify-between gap-3 pt-4 ${featured ? "flex-col" : ""}`}>
-          <strong className={`text-xl ${featured ? "text-blue-300" : "text-blue-700"}`}>
+          <strong className="text-xl text-blue-700">
             ${product.precio.toLocaleString("es-CO")}
           </strong>
           <Link
