@@ -16,15 +16,13 @@ import { getProducts } from "../services/productService";
 export function useProducts(page = 1, categoria?: string, buscar?: string) {
   // Estados (memoria del componente)
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [loadedQuery, setLoadedQuery] = useState<string | null>(null);
+  const [queryError, setQueryError] = useState<{ key: string; message: string } | null>(null);
   const [totalPages, setTotalPages] = useState(1);
+  const queryKey = `${page}|${categoria ?? ""}|${buscar ?? ""}`;
 
-  // Efecto: Cargar productos cuando cambia la página
+  // La carga depende de los filtros de la URL; el resultado anterior no se muestra como actual.
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-
     let vigente = true;
 
     getProducts({ page, categoria, buscar })
@@ -32,19 +30,23 @@ export function useProducts(page = 1, categoria?: string, buscar?: string) {
         if (!vigente) return;
         setProducts(response.data);
         setTotalPages(response.pagination.totalPages);
+        setQueryError(null);
       })
-      .catch((error: unknown) => {
+      .catch(() => {
         if (!vigente) return;
-        setError("Error al cargar los productos");
+        setQueryError({ key: queryKey, message: "Error al cargar los productos" });
       })
       .finally(() => {
-        if (vigente) setLoading(false);
+        if (vigente) setLoadedQuery(queryKey);
       });
 
     return () => {
       vigente = false;
     };
-  }, [page, categoria, buscar]);
+  }, [page, categoria, buscar, queryKey]);
+
+  const loading = loadedQuery !== queryKey;
+  const error = queryError?.key === queryKey ? queryError.message : null;
 
   return { products, loading, error, page, totalPages };
 }

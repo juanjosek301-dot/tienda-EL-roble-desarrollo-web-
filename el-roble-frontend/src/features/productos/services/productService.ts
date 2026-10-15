@@ -1,5 +1,16 @@
 import { fetchWithAuth } from "@/features/common/http";
-import type { ProductResponse } from "../domain/types";
+import type { Product, ProductResponse } from "../domain/types";
+
+export type ProductInput = Omit<Product, "id">;
+
+async function ensureSuccess(response: Response, fallback: string) {
+  if (response.ok) return;
+  const body: unknown = await response.json().catch(() => null);
+  const message = typeof body === "object" && body !== null && "message" in body && typeof body.message === "string"
+    ? body.message
+    : fallback;
+  throw new Error(message);
+}
 
 export interface ProductQuery {
   page?: number;
@@ -31,4 +42,25 @@ export async function getAllProducts(): Promise<ProductResponse["data"]> {
   );
 
   return [...firstPage.data, ...remainingPages.flatMap((response) => response.data)];
+}
+
+export async function createProduct(product: ProductInput): Promise<void> {
+  const response = await fetchWithAuth("/api/productos", {
+    method: "POST",
+    body: JSON.stringify(product),
+  });
+  await ensureSuccess(response, "No fue posible crear el producto.");
+}
+
+export async function updateProduct(id: number, product: ProductInput): Promise<void> {
+  const response = await fetchWithAuth(`/api/productos/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(product),
+  });
+  await ensureSuccess(response, "No fue posible actualizar el producto.");
+}
+
+export async function deleteProduct(id: number): Promise<void> {
+  const response = await fetchWithAuth(`/api/productos/${id}`, { method: "DELETE" });
+  await ensureSuccess(response, "No fue posible eliminar el producto.");
 }

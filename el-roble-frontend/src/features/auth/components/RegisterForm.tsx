@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
+import { AuthServiceError } from "../services/authService";
 import AuthCard from "./AuthCard";
 
 export default function RegisterForm() {
@@ -15,6 +16,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -25,6 +27,7 @@ export default function RegisterForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    setEmailError("");
     if (password !== confirmation) {
       setError("Las contraseñas no coinciden.");
       return;
@@ -34,7 +37,11 @@ export default function RegisterForm() {
       await register({ nombre, email, password });
       setSuccess(true);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "No fue posible crear la cuenta.");
+      if (cause instanceof AuthServiceError && cause.status === 409) {
+        setEmailError(cause.message);
+      } else {
+        setError(cause instanceof Error ? cause.message : "No fue posible crear la cuenta.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -45,7 +52,7 @@ export default function RegisterForm() {
       {success ? <div className="space-y-4 text-center"><p role="status" className="rounded-lg bg-green-50 p-3 text-sm text-green-800">Ya puedes ingresar con tu correo y contraseña.</p><Link href="/login" className="inline-block rounded-lg bg-blue-700 px-5 py-3 font-bold text-white hover:bg-blue-600">Ir a ingresar</Link></div> : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div><label htmlFor="nombre" className="mb-2 block text-sm font-semibold text-slate-800">Nombre completo</label><input id="nombre" name="nombre" type="text" autoComplete="name" minLength={3} required value={nombre} onChange={(event) => setNombre(event.target.value)} className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="Tu nombre" /></div>
-          <div><label htmlFor="email" className="mb-2 block text-sm font-semibold text-slate-800">Correo electrónico</label><input id="email" name="email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="tu@correo.com" /></div>
+          <div><label htmlFor="email" className="mb-2 block text-sm font-semibold text-slate-800">Correo electrónico</label><input id="email" name="email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} aria-invalid={Boolean(emailError)} aria-describedby={emailError ? "email-error" : undefined} className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="tu@correo.com" />{emailError && <p id="email-error" role="alert" className="mt-1 text-sm text-red-700">{emailError}</p>}</div>
           <div><label htmlFor="password" className="mb-2 block text-sm font-semibold text-slate-800">Contraseña</label><input id="password" name="password" type="password" autoComplete="new-password" minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="Mínimo 8 caracteres" /></div>
           <div><label htmlFor="confirmar-password" className="mb-2 block text-sm font-semibold text-slate-800">Confirmar contraseña</label><input id="confirmar-password" name="confirmar-password" type="password" autoComplete="new-password" minLength={8} required value={confirmation} onChange={(event) => setConfirmation(event.target.value)} className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100" placeholder="Repite la contraseña" /></div>
           <button type="submit" disabled={isSubmitting || isLoading} className="w-full rounded-lg bg-blue-700 px-5 py-3 font-bold text-white transition hover:bg-blue-600 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">{isSubmitting ? "Creando cuenta…" : "Crear cuenta"}</button>

@@ -24,7 +24,10 @@ export function useOrderForm(products: Product[]) {
 
   const selectedProducts = products.filter((product) => quantities[product.id] !== undefined);
   const total = useMemo(
-    () => selectedProducts.reduce((sum, product) => sum + product.precio * quantities[product.id], 0),
+    () => products.reduce((sum, product) => {
+      const quantity = quantities[product.id];
+      return quantity === undefined ? sum : sum + product.precio * quantity;
+    }, 0),
     [products, quantities],
   );
 

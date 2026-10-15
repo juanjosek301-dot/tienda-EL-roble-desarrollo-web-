@@ -1,4 +1,5 @@
 // src/features/productos/components/ProductCard.tsx
+import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "../domain/types";
 
@@ -12,10 +13,13 @@ export default function ProductCard({ product, variant = "catalog" }: ProductCar
 
   return (
     <article className={`flex h-full flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1 ${featured ? "border-blue-800 bg-slate-900 hover:border-blue-500" : "border-blue-100 bg-white shadow-md hover:shadow-xl"}`}>
-      <div className={`flex h-48 items-center justify-center overflow-hidden ${featured ? "bg-white" : "bg-gray-100"}`}>
-        <img
+      <div className={`relative flex h-48 items-center justify-center overflow-hidden ${featured ? "bg-white" : "bg-gray-100"}`}>
+        <Image
           src={product.imagen}
           alt={product.nombre}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          unoptimized
           className={`h-full w-full ${featured ? "object-contain" : "object-cover"}`}
         />
       </div>

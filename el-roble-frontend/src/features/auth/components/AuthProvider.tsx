@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { login as loginRequest, register as registerRequest } from "../services/authService";
 import type { AuthContextValue } from "../hooks/authContext";
 import { AuthContext } from "../hooks/authContext";
@@ -10,25 +11,40 @@ import type { LoginRequest, RegisterRequest, User } from "../domain/types";
 const USER_STORAGE_KEY = "user";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const token = window.localStorage.getItem("token");
-      const storedUser = window.localStorage.getItem(USER_STORAGE_KEY);
-      if (token && storedUser) setUser(JSON.parse(storedUser) as User);
-      else {
+    let mounted = true;
+    queueMicrotask(() => {
+      try {
+        const token = window.localStorage.getItem("token");
+        const storedUser = window.localStorage.getItem(USER_STORAGE_KEY);
+        if (token && storedUser && mounted) setUser(JSON.parse(storedUser) as User);
+        else {
+          window.localStorage.removeItem("token");
+          window.localStorage.removeItem(USER_STORAGE_KEY);
+        }
+      } catch {
         window.localStorage.removeItem("token");
         window.localStorage.removeItem(USER_STORAGE_KEY);
+      } finally {
+        if (mounted) setIsLoading(false);
       }
-    } catch {
-      window.localStorage.removeItem("token");
-      window.localStorage.removeItem(USER_STORAGE_KEY);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    });
+
+    const handleExpiredSession = () => {
+      setUser(null);
+      const currentPath = `${window.location.pathname}${window.location.search}`;
+      router.replace(`/login?next=${encodeURIComponent(currentPath)}`);
+    };
+    window.addEventListener("auth:expired", handleExpiredSession);
+    return () => {
+      mounted = false;
+      window.removeEventListener("auth:expired", handleExpiredSession);
+    };
+  }, [router]);
 
   async function login(credentials: LoginRequest) {
     const result = await loginRequest(credentials);

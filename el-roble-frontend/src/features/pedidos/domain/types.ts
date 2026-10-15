@@ -17,6 +17,22 @@ export interface CreateOrderRequest {
   observaciones: string;
 }
 
+export interface PedidoProducto {
+  productoId: number;
+  nombre: string;
+  precio: number;
+  cantidad: number;
+}
+
+export interface Pedido {
+  id: number;
+  createdAt: string;
+  estado: string;
+  total: number;
+  metodoPago: PaymentMethod;
+  productos: PedidoProducto[];
+}
+
 export interface OrderContact {
   nombre: string;
   email: string;

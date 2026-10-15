@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import type { FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ProductCategory } from "../domain/categories";
@@ -18,10 +18,7 @@ function CatalogoContenido() {
     ? (categoriaParam as ProductCategory)
     : undefined;
   const buscar = searchParams.get("buscar")?.trim() ?? "";
-  const [textoBusqueda, setTextoBusqueda] = useState(buscar);
   const { products, loading, error, totalPages } = useProducts(page, categoria, buscar);
-
-  useEffect(() => setTextoBusqueda(buscar), [buscar]);
 
   function updateQuery(values: Record<string, string>) {
     const query = new URLSearchParams(searchParams.toString());
@@ -32,13 +29,8 @@ function CatalogoContenido() {
     router.push(`/catalogo?${query.toString()}`);
   }
 
-  function submitSearch(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    updateQuery({ buscar: textoBusqueda.trim(), page: "1" });
-  }
-
   return (
-    <main className="mx-auto min-h-[70vh] max-w-7xl px-4 py-10 text-slate-100 sm:px-6 lg:px-8">
+    <div className="mx-auto min-h-[70vh] max-w-7xl px-4 py-10 text-slate-100 sm:px-6 lg:px-8">
       <header className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-blue-300 sm:text-4xl">Catálogo de productos</h1>
         <p className="mt-3 text-slate-300">Encuentra los productos disponibles en nuestro mercado El Roble.</p>
@@ -53,11 +45,7 @@ function CatalogoContenido() {
             </button>
           ))}
         </div>
-        <form onSubmit={submitSearch} className="mx-auto flex max-w-xl gap-2">
-          <label className="sr-only" htmlFor="buscar-producto">Buscar producto</label>
-          <input id="buscar-producto" value={textoBusqueda} onChange={(event) => setTextoBusqueda(event.target.value)} placeholder="Buscar producto, por ejemplo: arroz" className="min-w-0 flex-1 rounded-lg border border-blue-800 bg-slate-900 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-          <button type="submit" className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500">Buscar</button>
-        </form>
+        <SearchForm key={buscar} initialValue={buscar} onSearch={(value) => updateQuery({ buscar: value, page: "1" })} />
       </section>
 
       {loading && <p className="py-12 text-center" role="status">Cargando productos…</p>}
@@ -76,7 +64,24 @@ function CatalogoContenido() {
           </nav>
         </>
       )}
-    </main>
+    </div>
+  );
+}
+
+function SearchForm({ initialValue, onSearch }: { initialValue: string; onSearch: (value: string) => void }) {
+  const [value, setValue] = useState(initialValue);
+
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    onSearch(value.trim());
+  }
+
+  return (
+    <form onSubmit={submitSearch} className="mx-auto flex max-w-xl gap-2">
+      <label className="sr-only" htmlFor="buscar-producto">Buscar producto</label>
+      <input id="buscar-producto" value={value} onChange={(event) => setValue(event.target.value)} placeholder="Buscar producto, por ejemplo: arroz" className="min-w-0 flex-1 rounded-lg border border-blue-800 bg-slate-900 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <button type="submit" className="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white hover:bg-blue-500">Buscar</button>
+    </form>
   );
 }
 

@@ -23,13 +23,24 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
     },
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+  } catch (cause) {
+    if (cause instanceof TypeError) {
+      throw new Error(
+        `No fue posible conectar con la API en ${API_BASE_URL}. Verifica que el backend esté iniciado, que la dirección sea correcta y que CORS permita este sitio.`,
+      );
+    }
+    throw cause;
+  }
 
   // Si el token expiró o es inválido (401), limpiar sesión y redirigir a login
   if (response.status === 401 && !endpoint.startsWith("/api/auth/")) {
     if (typeof window !== "undefined") {
       window.localStorage.removeItem("token");
-      window.location.assign("/login");
+      window.localStorage.removeItem("user");
+      window.dispatchEvent(new Event("auth:expired"));
     }
   }
 
