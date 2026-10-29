@@ -23,7 +23,7 @@ Requisitos: Node.js 22 o superior y npm.
    NEXT_PUBLIC_API_HOST=http://localhost:3001
    ```
 
-5. Inicia el backend con `npm run dev` en su carpeta y el frontend con `npm run dev` dentro de `el-roble-frontend/`.
+5. Inicia el backend con `npm run dev` en su carpeta y el frontend con `npm run dev -- --webpack` dentro de `el-roble-frontend/`. En este equipo, Webpack evita el fallo al iniciar procesos auxiliares que aparece con Turbopack.
 6. Abre [http://localhost:3000](http://localhost:3000). La API local escucha en `http://localhost:3001`.
 
 ## Cuentas de prueba
