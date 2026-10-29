@@ -7,12 +7,12 @@ El backend se trabaja en un repositorio independiente: [el-roble-backend](https:
 ## Despliegues
 
 - **Frontend:** pendiente de despliegue de esta versión en Vercel.
-- **API:** pendiente de despliegue en Render; el repositorio backend incluye `render.yaml`.
+- **API:** desplegada en [Render](https://el-roble-api.onrender.com); comprobación de salud: [`/api/health`](https://el-roble-api.onrender.com/api/health).
 - El [sitio anterior en Vercel](https://tienda-el-roble-desarrollo-web.vercel.app/) corresponde al prototipo original; no es el despliegue de esta aplicación Next.js.
 
 ### Preparación de Vercel
 
-Al importar este repositorio en Vercel, configura **Root Directory** como `el-roble-frontend`; allí está la aplicación Next.js. En las variables de entorno de producción agrega `NEXT_PUBLIC_API_HOST` con la URL pública de la API desplegada. Después de cambiar esta variable, crea un nuevo despliegue para que Next.js la incorpore.
+Al importar este repositorio en Vercel, configura **Root Directory** como `el-roble-frontend`; allí está la aplicación Next.js. En las variables de entorno de producción agrega `NEXT_PUBLIC_API_HOST` con el valor `https://el-roble-api.onrender.com`. Después de cambiar esta variable, crea un nuevo despliegue para que Next.js la incorpore.
 
 ## Ejecutar en local
 
