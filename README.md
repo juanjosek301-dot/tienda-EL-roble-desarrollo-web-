@@ -7,8 +7,12 @@ El backend se trabaja en un repositorio independiente: [el-roble-backend](https:
 ## Despliegues
 
 - **Frontend:** pendiente de despliegue de esta versión en Vercel.
-- **API:** pendiente de despliegue en Render o Railway.
+- **API:** pendiente de despliegue en Render; el repositorio backend incluye `render.yaml`.
 - El [sitio anterior en Vercel](https://tienda-el-roble-desarrollo-web.vercel.app/) corresponde al prototipo original; no es el despliegue de esta aplicación Next.js.
+
+### Preparación de Vercel
+
+Al importar este repositorio en Vercel, configura **Root Directory** como `el-roble-frontend`; allí está la aplicación Next.js. En las variables de entorno de producción agrega `NEXT_PUBLIC_API_HOST` con la URL pública de la API desplegada. Después de cambiar esta variable, crea un nuevo despliegue para que Next.js la incorpore.
 
 ## Ejecutar en local
 
@@ -23,7 +27,7 @@ Requisitos: Node.js 22 o superior y npm.
    NEXT_PUBLIC_API_HOST=http://localhost:3001
    ```
 
-5. Inicia el backend con `npm run dev` en su carpeta y el frontend con `npm run dev -- --webpack` dentro de `el-roble-frontend/`. En este equipo, Webpack evita el fallo al iniciar procesos auxiliares que aparece con Turbopack.
+5. Inicia el backend con `npm run dev` en su carpeta y el frontend con `npm run dev` dentro de `el-roble-frontend/`. Los comandos `dev` y `build` ya usan Webpack para evitar el fallo de Turbopack observado al procesar CSS en este equipo.
 6. Abre [http://localhost:3000](http://localhost:3000). La API local escucha en `http://localhost:3001`.
 
 ## Cuentas de prueba
